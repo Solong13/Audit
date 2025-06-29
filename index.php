@@ -1,4 +1,6 @@
 <?php
+session_start();
+$_SESSION = array(); // - ще варто придумати як онуляти сесію, щоб не висіли значення після реєєстрації і доробити помилки обробку
 include_once ('register_form.php');
 //include_once ('login_form.php');
 

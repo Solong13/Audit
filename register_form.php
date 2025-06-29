@@ -15,22 +15,20 @@
 
             <label for="fullname"><b>Ваш ПІП</b></label>
             <input type="text" placeholder="Вашe ПІП" name="fullname" required>
-            <p style="color: red;"><?= isset($_GET['fullname']) ? $_GET['fullname'] : null?></p>
 
             <div class="custom-select">
                 <label for="current_position"><b>Актуальна посада</b></label>
                 <select name="current_position">
-
-                    <option value="Старший майстер зміни">Старший майстер зміни</option>
-
+                    <option value="Апаратник">Апаратник підготовки напівсировини та готової продукції</option>
+         
                 </select>
             </div>
 
             <div class="custom-select">
                 <label for="workshop"><b>Цex</b></label>
                 <select name="workshop">
-                    <option value="11">М-5</option>
-                    <option value="А22">А-7</option>
+                    <option value="М-5">М</option>
+                    <option value="А-7">7</option>
                 </select>
             </div>
 
@@ -43,7 +41,17 @@
 
             <button type="submit" class="registerbtn">Зареєструвати</button>
 
-            <p style="color: red;"><?= isset($_GET['errors']) ? $_GET['errors'] : null; ?></p>
+                <?php
+                    if (isset($_SESSION['errors'])) {
+                        foreach ($_SESSION['errors'] as $key => $value) {?>
+                        <p style="color: red;"><?= $value; ?> </p>
+                <?php   }    
+                    } 
+                    if (isset($_SESSION['success'])) {
+                       ?>
+                            <p style="color: green;"><?= $_SESSION['success']; ?> </p>
+                
+                  <?php } ?>
 
             <div class="container signin">
             <p>Ви вже маєте акаунт? <a href="#">Увійти</a>.</p>

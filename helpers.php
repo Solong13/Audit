@@ -1,19 +1,47 @@
 <?php
 // Найпростіша валідація, обрізання пробілів побокам та ігнорування html-символів
-function fieldValidation(array $fileds) : array
+const USERSDATA = 'data/user_data.txt';
+
+function clenFeilds(array $fileds) : array
 {
     $new_validations_dates = [];
-    
     foreach ($fileds as $key => $value) {
-        $new_validations_dates[$key] = trim(htmlspecialchars($_POST[$key]));
+        $new_validations_dates[$key] = trim(htmlspecialchars($value));    
     }
 
     return $new_validations_dates;
 }
+
+// Мінімально-необхідна валідація
+function validFields(array $fileds) 
+{
+    $errors = [];
+    if (isset($fileds["fullname"])) {
+        if ((int)strlen($fileds["fullname"])  < 10 || (int)strlen($fileds["fullname"])> 50) {
+            $errors[] = "ПІП повинно складати від 10 до 50 символів";
+        } 
+    }
+    
+    if (isset($fileds['table_number'])) {
+        if ((int)strlen($fileds['table_number']) < 1 || (int)strlen($fileds['table_number']) > 6) {
+            $errors[] = "Табельний номер повинен складати від 1 до 6 цифир";
+        }
+    }
+    
+    if (isset($fileds['current_salary'])) {
+        if ($fileds["current_salary"] < 8000) {
+            $errors[] = "Мінімальна заробітня плата в Україні становить 8000 гривень";
+        }
+    }
+
+    return $errors;
+
+}
+
 // Запис даних в файл в json форматі(сереалізація)
 function encoder(mixed $user_data) 
 {   
-    file_put_contents("users/user_data.txt", json_encode($user_data));
+    file_put_contents(USERSDATA, json_encode($user_data));
 }
 
 // Створення файлу в перший раз та читання його і видача, як асоціативного масиву
@@ -29,7 +57,7 @@ function decoder(string $file_name) : array
 function simpleViewArray(mixed $array)
 {
     echo '<pre>';
-    print_r($array);
+    var_dump($array);
     echo '</pre>';
 }
 
@@ -61,4 +89,24 @@ function checkUsers(array $dataUser, array $database)
     } else {
         return true;
     }
+}
+
+
+// Типу винесений блок для реєстрації і авторизації???
+function auto_regist(array $data)
+{
+
+    if (isset($data) && !empty($data)) {
+
+    $new_user_data = clenFeilds($data);
+    
+    $valid_data_user = validFields($new_user_data);
+
+    if ($valid_data_user !== null && !empty($valid_data_user)) {
+        return $valid_data_user;
+    } else { 
+        return true; 
+    }
+    }
+
 }

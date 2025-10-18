@@ -1,6 +1,8 @@
 <?php
 session_start();
-include_once ('helpers.php');
+include_once ('config/connectionToDB.php');
+include_once ('helpers.php');   
+include_once ('helpers_for_DB.php');   
 /* Придумати захист від спаму на сервер одного і того ж фото
     ствр папку куди буду сейвить певні дані
     +Ств змінну де буде зберігатися файл зі шляхом збереження у користувача
@@ -43,27 +45,18 @@ if (isset($_POST['submit']) && ($_FILES["image"]["error"]) === 0) {
             // Унікальне ім'я файлу
             $newFileName = uniqid('_img') . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
             $destination = $uploadDir . $newFileName;
-        
+
             if (!file_exists($destination)) {
                 if (move_uploaded_file($fileTmp, $destination)) {
                     //echo "✅ Файл успішно завантажено: <a href='$destination'>Переглянути</a>";
                    // $success = "✅ Файл успішно завантажено";
 
-                    if (isset($_SESSION['user'])) {
-                        if (!isset($_SESSION['user']['photoPath'])) {
-                            // Повторення коду збереження даних користувача з додаванням нового поля
-                            $all_data_of_users = decoder(USERSDATA);
-                            $_SESSION['user']['photoPath'] = $destination;
-                            // знову витягувати иасив конкретний і в процесі записувати або витягувати відразу з ключем багатомірного масиву
-                            $all_data_of_users[$_SESSION['user']['id']] = array_merge($all_data_of_users[$_SESSION['user']['id']],
-                            ['photoPath' => $destination]);
-
-                            encoder($all_data_of_users);
-                            // Завершення повторення
-                        } else {
-                            
-                        }
-                     
+                    if (isset($_SESSION["employee"])) {
+                        addPhotoEmployee($destination, $_SESSION['employee']['id_employee'], $dbh);
+                        $_SESSION['employee'] = 
+                            [
+                                "photo" => $destination,
+                            ];
                         redirect('/public/index');
                         exit();
                     } else {
@@ -78,7 +71,6 @@ if (isset($_POST['submit']) && ($_FILES["image"]["error"]) === 0) {
             }
          
         }
-        print_r($destination);// визначає тип файлу
         
 }else {
     $errorsOfPhotos['error']  = "❌ Файл не обрано або сталася помилка.";

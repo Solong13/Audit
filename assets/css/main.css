@@ -77,6 +77,77 @@ input, select, textarea {
 	appearance: none;
 }
 
+.date-and-time {
+	border-bottom: dotted 1px #000;
+}
+
+.workshop-and-table_number{
+	border-bottom: dotted 1px #000;
+}
+
+.pay-slip {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px dotted #000;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.pay-slip td {
+  border: 1px dotted #000;
+  padding: 4px 6px;
+  text-align: center;
+}
+
+.pay-slip .no-border {
+  border: none;
+}
+
+.pay-slip .left {
+  text-align: left;
+}
+
+.pay-slip .right {
+  text-align: right;
+}
+
+.pay-slip .center {
+  text-align: center;
+}
+
+.pay-slip .section-head td {
+  background: #f0f0f0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.pay-slip .section-subhead td {
+  background: #e0e0e0;
+  font-weight: bold;
+}
+
+.pay-slip .bold {
+  font-weight: bold;
+}
+
+
+
+.forSalary {
+
+	border:3px dotted #666161;
+}
+
+/* .forSalary > * tr {
+	border-bottom: 2px dotted #666161;
+} */
+
+.firstRowTabSalary {
+	border-bottom: 2px dotted #666161;
+}
+
+.codeDate {
+	text-align: end;
+}
 /* Basic */
 
 	html {

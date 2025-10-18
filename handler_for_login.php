@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include_once ('helpers.php');
+include_once ('helpers.php');               
 
 $errors = [];
 $success = false;
@@ -28,7 +28,7 @@ if ($success && empty($errors)) {
 
      // - валідація даних
     $all_data_of_users = decoder(USERSDATA);// - повернення асоціативного масива
-    simpleViewArray($all_data_of_users);
+    simpleViewArray($all_data_of_users);         
 
     $ourUser = false;
     $idUser = null;
@@ -63,6 +63,7 @@ if (isset($ourUser) && !empty($ourUser)) {
     redirect('/public/index');
     exit();
 } else {
+    $errors["errors"] = 'User doesn\'t found!';
     $_SESSION['errors'] = $errors;
     redirect('/public/index');
     exit();

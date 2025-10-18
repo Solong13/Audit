@@ -1,7 +1,9 @@
 <?php
 //$_SESSION = array(); // - ще варто придумати як онуляти сесію, щоб не висіли значення після реєєстрації і доробити помилки обробку
+include_once ('../config/connectionToDB.php');
 include_once ('../home.php');
-//include_once ('login_form.php');
+
+
 
 // 1. Обробка на PHP
 // Реєстрація: збереження email/пароля (на перших порах у файл, потім — БД)

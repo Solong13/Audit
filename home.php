@@ -1,74 +1,12 @@
-<?php include_once ('../header.php');
-include_once ('helpers.php'); ?>
+<?php 
 
-				<!-- Portfolio -->
-					<section id="portfolio" class="two">
-						<div class="container">
-
-							<header>
-								<h2>Portfolio</h2>
-							</header>
-<?php //var_dump($_SESSION['photoPath']);
-// $data = decoder('../data/user_data.txt');
-// simpleViewArray($data);
-var_dump($_SESSION['user']);
-
-?>
-							<p>Vitae natoque dictum etiam semper magnis enim feugiat convallis convallis
-							egestas rhoncus ridiculus in quis risus amet curabitur tempor orci penatibus.
-							Tellus erat mauris ipsum fermentum etiam vivamus eget. Nunc nibh morbi quis
-							fusce hendrerit lacus ridiculus.</p>
-
-							<div class="row">
-								<div class="col-4 col-12-mobile">
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
-										<header>
-											<h3>Ipsum Feugiat</h3>
-										</header>
-									</article>
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic03.jpg" alt="" /></a>
-										<header>
-											<h3>Rhoncus Semper</h3>
-										</header>
-									</article>
-								</div>
-								<div class="col-4 col-12-mobile">
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic04.jpg" alt="" /></a>
-										<header>
-											<h3>Magna Nullam</h3>
-										</header>
-									</article>
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic05.jpg" alt="" /></a>
-										<header>
-											<h3>Natoque Vitae</h3>
-										</header>
-									</article>
-								</div>
-								<div class="col-4 col-12-mobile">
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic06.jpg" alt="" /></a>
-										<header>
-											<h3>Dolor Penatibus</h3>
-										</header>
-									</article>
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
-										<header>
-											<h3>Orci Convallis</h3>
-										</header>
-									</article>
-								</div>
-							</div>
-
-						</div>
-					</section>
-
+include_once ('../header.php');
+include_once ('helpers.php'); 
+include_once ('../portfolio.php');?>
+			
 				<!-- About Me -->
-					<section id="about" class="three">
+
+					<!-- <section id="about" class="three">
 						<div class="container">
 
 							<header>
@@ -83,12 +21,15 @@ var_dump($_SESSION['user']);
 							parturient nulla quam placerat viverra mauris non cum elit tempus ullamcorper
 							dolor. Libero rutrum ut lacinia donec curae mus vel quisque sociis nec
 							ornare iaculis.</p>
-
 						</div>
-					</section>
+					</section> -->
+
+
+
 
 				<!-- Contact -->
-					<section id="contact" class="four">
+
+					<!-- <section id="contact" class="four">
 						<div class="container">
 
 							<header>
@@ -114,7 +55,7 @@ var_dump($_SESSION['user']);
 							</form>
 
 						</div>
-					</section>
+					</section> -->
 				<?php 
 					if (isset($_SESSION['errors'])) {
 						foreach ($_SESSION['errors'] as $key => $value) {?>

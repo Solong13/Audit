@@ -7,17 +7,23 @@
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
 </head>
 <body>
-    <form action="handler.php">
+    <form action="handler_for_loginDB.php" method="POST">
         <div class="container">
             <h1>Авторизація особи</h1>
             <p>Будь ласка заповніть всі поля для того щоб зареєструватись</p>
             <hr>
 
-            <label for="current_salary"><b>Актуальний оклад</b></label>
-            <input type="text" placeholder="Актуальний оклад" name="current_salary" required>
+            <label for="fullname"><b>Ваш ПІП</b></label>
+            <input type="text" placeholder="Вашe ПІП" name="fullname" required>
+
+            <label for="password"><b>Введіть пароль</b></label>
+            <input type="text" placeholder="Введіть пароль" name="password" required>
             <hr>
 
             <button type="submit" class="registerbtn">Увійти</button>
+            <div class="container signin">
+            <p>Ще не маєте акаунт? <a href="registration.php">Реєстрація</a>.</p>
+            </div>
         </div>
 
     </form>

@@ -6,7 +6,11 @@ function clenFeilds(array $fileds) : array
 {
     $new_validations_dates = [];
     foreach ($fileds as $key => $value) {
-        $new_validations_dates[$key] = trim(htmlspecialchars($value));    
+        if (isset($value) && empty($value)) {
+            $new_validations_dates[$key] = null; 
+        } else {
+            $new_validations_dates[$key] = trim(htmlspecialchars($value));   
+        }
     }
 
     return $new_validations_dates;
@@ -109,4 +113,23 @@ function auto_regist(array $data)
     }
     }
 
+}
+
+function sortedDataEmployee(array $getSalaryEmployee) 
+{
+
+    foreach($getSalaryEmployee as $value) {
+        if($value["Accural_time"]) {
+
+       // Додаємо нові ключі у той самий елемент
+        $getSalaryEmployee[0]['year'] = substr($value["Accural_time"], 0, 10);
+        $getSalaryEmployee[0]['time'] = substr($value["Accural_time"], 10, 20);
+        $getSalaryEmployee[0]['month'] = substr($value["Accural_time"], 5, 2);
+        // Видаляємо старе поле
+        unset($getSalaryEmployee[0]["Accural_time"]);
+
+            
+        }
+    }
+return $getSalaryEmployee;
 }

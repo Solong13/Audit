@@ -20,7 +20,7 @@
 						</div>
 					</section>
 
-  <form action="../handler_for_registretion.php" method="POST">
+  <form action="handler_for_registretionDB.php" method="POST">
         <div class="container">
             <h1>Реєстрація</h1>
             <p>Будь ласка заповніть всі поля для того щоб зареєструватись</p>
@@ -31,23 +31,23 @@
 
             <div class="custom-select">
                 <label for="current_position"><b>Актуальна посада</b></label>
-                <select name="current_position">
-                    <option value="родукції">Ародукції</option>
-                    <option value="Аії">Апарляції</option>
-                    <option value="Маок">Мовок</option>
-                    <option value="Апрбції">Аії</option>
-                    <option value="Сї">Стбції</option>
-                    <option value="Си">Стни</option>
-                    <option value="Чер">Чентер</option>
-                    <option value="ЧПіА">ЧеіА</option>
+                    <select name="current_position">
+                    <option value="Апаратник підготовки напівсировини та готової продукції">Апаратник підготовки напівсировини та готової продукції</option>
+                    <option value="Апаратник теплоізоляції">Апаратник теплоізоляції</option>
+                    <option value="Машиніст компресорних установок">Машиніст компресорних установок</option>
+                    <option value="Апаратник абсорбції">Апаратник абсорбції</option>
+                    <option value="Старший апаратник абсорбції">Старший апаратник абсорбції</option>
+                    <option value="Старший майстер зміни">Старший майстер зміни</option>
+                    <option value="Черговий елктромонтер">Черговий елктромонтер</option>
+                    <option value="Черговий КВПіА">Черговий КВПіА</option>
                 </select>
             </div>
 
             <div class="custom-select">
                 <label for="workshop"><b>Цex</b></label>
                 <select name="workshop">
-                    <option value="5">5</option>
-                    <option value="7">7</option>
+                    <option value="М-5">М-5</option>
+                    <option value="А-7">А-7</option>
                 </select>
             </div>
 

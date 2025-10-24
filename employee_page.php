@@ -185,19 +185,29 @@
 
 <header>
   Кабінет користувача
+  <a href="/public">Home</a>
 </header>
 
 <?php
 // Вивід всіх даних користувача uploads/_img68de553bbf087.png
-$theEmployee = getCurrentEmployee(trim(htmlspecialchars($_REQUEST['id_employee'])), $dbh);
+if (isset($_REQUEST['id_employee'])) {
+  $_SESSION['id_for_salary'] = $_REQUEST['id_employee'];
+}
 
-var_dump($_REQUEST);
+$theEmployee = getCurrentEmployee(trim(htmlspecialchars($_SESSION['id_for_salary'])), $dbh);
+if (empty($theEmployee)) {
+  $theNewEmployee = (getEmployee($_SESSION['id_for_salary'],  $dbh));
+}
+
+if (isset($theEmployee['id_position'])) {
+  $theEmployee = [$theEmployee];
+}
 ?> 
 <main>
   <!-- Верхній блок -->
   <div class="profile-section">
     <div class="photo-upload">
-        <img src="<?=$theEmployee['photo']?>" alt="Фото працівника">
+        <img src="<?=$theEmployee[0]['photo'] ?? $theNewEmployee['photo']?>" alt="Фото працівника">
       <form method="post" enctype="multipart/form-data">
         <input type="file" name="photo">
         <button type="submit">Змінити фото</button>
@@ -205,23 +215,24 @@ var_dump($_REQUEST);
     </div>
 
     <div class="employee-info">
-      <h2><?=$theEmployee['fullname']?></h2>
-      <p><b>Посада:</b><?=$theEmployee['fullname']?></p>
-      <p><b>Табельний №:</b><?=$theEmployee['table_number']?></p>
-      <p><b>Цех:</b><?=$theEmployee['workshop']?></p>
-      <p><b>Оклад:</b><?=$theEmployee['base_salary']?> грн</p>
+      <h2><?=$theEmployee[0]['fullname'] ?? $theNewEmployee['fullname']?></h2>
+      <p><b>Посада:</b><?=$theEmployee[0]['fullname'] ?? $theNewEmployee['fullname']?></p>
+      <p><b>Табельний №:</b><?=$theEmployee[0]['table_number'] ?? $theNewEmployee['table_number']?></p>
+      <p><b>Цех:</b><?=$theEmployee[0]['workshop'] ?? $theNewEmployee['workshop']?></p>
+      <p><b>Оклад:</b><?=$theEmployee[0]['base_salary'] ?? $theNewEmployee['base_salary']?> грн</p>
     </div>
   </div>
 
   <!-- Форма внесення зарплати -->
 
-  <form class="salary-form" action="../handler_for_portfolio.php" method="POST">
+  <form class="salary-form" action="../actions/handler_for_salaries.php" method="POST">
     <h3>Додати/оновити зарплату</h3>
 
-    <input type="hidden" name="id_employee" value="<?= $_GET['id_employee'] ?>">
+    <input type="hidden" name="id_employee" value="<?= $_SESSION['id_for_salary'] ?? null?>">
+    <input type="hidden" name="id_position" value="<?= $theEmployee['id_position'] ?? null ?>">
 
     <label>Відпрацьовано годин</label>
-    <input type="number" name="All_hours_c6" placeholder="180" value="<?=$theEmployee['workshop']?> ?? '' ">
+    <input type="number" name="All_hours_c6" placeholder="180" value="">
 
     <label>Нічні годин</label>
     <input type="number" name="Night_shift_hours_c11" placeholder="180" value="">
@@ -247,236 +258,235 @@ var_dump($_REQUEST);
     <label>Лікарняні</label>
     <input type="number" name="Sick_pay" placeholder="0" value="">
 
-    <button type="submit">Додати</button>
+    <button type="text">Додати</button>
+
+    <?php if (isset($_SESSION['error_salary'] )) :?>
+      <p style="color:red">Fill the empty fields!</p>
+    <?php
+    unset($_SESSION['error_salary']);
+    endif; ?>
   </form>
 
-  <!-- Таблиця зарплат -->
-  <table>
-    <thead>
-      <tr>
-        <th>Місяць</th>
-        <th>Відпрацьовано годин</th>
-        <th>Сума</th>
-        <th>Дата нарахування</th>
-        <th>Дії</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?=substr($theEmployee['Accural_time'], 0, 7)?></td>
-        <td><?=$theEmployee['All_hours_c6']?></td>
-        <td><?=$theEmployee['base_salary']?></td>
-        <td><?=substr($theEmployee['Accural_time'], 0, 10)?></td>
-        <td class="actions">
-          <a href="?act=edit&id_employee=<?= $_GET['id_employee'] ?>"><button class="edit-btn">Edit</button></a>
-          <button class="delete-btn">Delete</button>
-        </td>
-      </tr>
-    </tbody>
+  <?php if (isset($theEmployee)) : ?>
+    <?php foreach ($theEmployee as $employee) : ?> 
+    <!-- Таблиця зарплат -->
+    <h1>Зарплата</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Місяць</th>
+          <th>Відпрацьовано годин</th>
+          <th>Сума</th>
+          <th>Дата нарахування</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+          <td><?=$employee['All_hours_c6']?></td>
+          <td><?=$employee['base_salary']?></td>
+          <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+        </tr>
+      </tbody>
+
+          <thead>
+        <tr>
+          <th>Місяць</th>
+          <th>Відпрацьовано годин за ніч</th>
+          <th>Сума</th>
+          <th>Дата нарахування</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+          <td><?=$employee['Night_shift_hours_c11']?></td>
+          <td><?=$employee['money_for_night_shift']?></td>
+          <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+        </tr>
+      </tbody>
+
+      <thead>
+        <tr>
+          <th>Місяць</th>
+          <th>Наднормовий час</th>
+          <th>Сума</th>
+          <th>Дата нарахування</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+          <td><?=$employee['Overtime_hours_c29']?></td>
+          <td><?=$employee['money_for_overtime']?></td>
+          <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+        </tr>
+      </tbody>
+
+      <thead>
+        <tr>
+          <th>Місяць</th>
+          <th>Заводська премія</th>
+          <th>Сума</th>
+          <th>Дата нарахування</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+          <td></td>
+          <td><?=$employee['premium_c116']?></td>
+          <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+        </tr>
+      </tbody>
+
+      <?php if ($employee['Code295']) :?>
+          <thead>
+            <tr>
+              <th>Місяць</th>
+              <th>Цехова премія</th>
+              <th>Сума</th>
+              <th>Дата нарахування</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+              <td></td>
+              <td><?=$employee['Code295']?></td>
+              <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+            </tr>
+          </tbody>
+      <?php endif; ?>
 
         <thead>
-      <tr>
-        <th>Місяць</th>
-        <th>Відпрацьовано годин за ніч</th>
-        <th>Сума</th>
-        <th>Дата нарахування</th>
-        <th>Дії</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?=substr($theEmployee['Accural_time'], 0, 7)?></td>
-        <td><?=$theEmployee['Night_shift_hours_c11']?></td>
-        <td><?=$theEmployee['money_for_night_shift']?></td>
-        <td><?=substr($theEmployee['Accural_time'], 0, 10)?></td>
-        <td class="actions">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-
-    <thead>
-      <tr>
-        <th>Місяць</th>
-        <th>Наднормовий час</th>
-        <th>Сума</th>
-        <th>Дата нарахування</th>
-        <th>Дії</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?=substr($theEmployee['Accural_time'], 0, 7)?></td>
-        <td><?=$theEmployee['Overtime_hours_c29']?></td>
-        <td><?=$theEmployee['money_for_overtime']?></td>
-        <td><?=substr($theEmployee['Accural_time'], 0, 10)?></td>
-        <td class="actions">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-
-    <thead>
-      <tr>
-        <th>Місяць</th>
-        <th>заводська премія</th>
-        <th>Сума</th>
-        <th>Дата нарахування</th>
-        <th>Дії</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?=substr($theEmployee['Accural_time'], 0, 7)?></td>
-        <td></td>
-        <td><?=$theEmployee['premium_c116']?></td>
-        <td><?=substr($theEmployee['Accural_time'], 0, 10)?></td>
-        <td class="actions">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-
+        <tr>
+          <th>Місяць</th>
+          <th>Індексація</th>
+          <th>Сума</th>
+          <th>Дата нарахування</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+          <td></td>
+          <td><?=$employee['Salary_indexation_c150']?></td>
+          <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+        </tr>
+      </tbody>
 
       <thead>
-      <tr>
-        <th>Місяць</th>
-        <th>Індексація</th>
-        <th>Сума</th>
-        <th>Дата нарахування</th>
-        <th>Дії</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?=substr($theEmployee['Accural_time'], 0, 7)?></td>
-        <td></td>
-        <td><?=$theEmployee['Salary_indexation_c150']?></td>
-        <td><?=substr($theEmployee['Accural_time'], 0, 10)?></td>
-        <td class="actions">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-        </td>
-      </tr>
-    </tbody>
+        <tr>
+          <th>Місяць</th>
+          <th>До сплати податків</th>
+          <th>Сума</th>
+          <th>Дата нарахування</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+          <td></td>
+          <td><?=$employee['gross_salary']?></td>
+          <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+        </tr>
+      </tbody>
 
-    <thead>
-      <tr>
-        <th>Місяць</th>
-        <th>До сплати податків</th>
-        <th>Сума</th>
-        <th>Дата нарахування</th>
-        <th>Дії</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?=substr($theEmployee['Accural_time'], 0, 7)?></td>
-        <td></td>
-        <td><?=$theEmployee['gross_salary']?></td>
-        <td><?=substr($theEmployee['Accural_time'], 0, 10)?></td>
-        <td class="actions">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-        </td>
-      </tr>
-    </tbody>
+          <thead>
+        <tr>
+          <th>Місяць</th>
+          <th>ПДФО</th>
+          <th>Сума</th>
+          <th>Дата оподаткування</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+          <td></td>
+          <td><?=$employee['PDFO_tax_c532']?></td>
+          <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+        </tr>
+      </tbody>
 
         <thead>
-      <tr>
-        <th>Місяць</th>
-        <th>ПДФО</th>
-        <th>Сума</th>
-        <th>Дата оподаткування</th>
-        <th>Дії</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?=substr($theEmployee['Accural_time'], 0, 7)?></td>
-        <td></td>
-        <td><?=$theEmployee['PDFO_tax_c532']?></td>
-        <td><?=substr($theEmployee['Accural_time'], 0, 10)?></td>
-        <td class="actions">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-        </td>
-      </tr>
-    </tbody>
+        <tr>
+          <th>Місяць</th>
+          <th>Профспілковий внесок 1%</th>
+          <th>Сума</th>
+          <th>Дата оподаткування</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+          <td></td>
+          <td><?=$employee['Trade_union_tax_c555']?></td>
+          <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+        </tr>
+      </tbody>
+      
+
+        <thead>
+        <tr>
+          <th>Місяць</th>
+          <th>Військовий збір 5%</th>
+          <th>Сума</th>
+          <th>Дата оподаткування</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+          <td></td>
+          <td><?=$employee['Military_Service_tax_c590']?></td>
+          <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+        </tr>
+      </tbody>
+
+        <thead>
+        <tr>
+          <th>Місяць</th>
+          <th>Сума після сплати податків</th>
+          <th>Сума</th>
+          <th>Дата нарахування</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?=substr($employee['Accural_time'], 0, 7)?></td>
+          <td></td>
+          <td><?=$employee['net_salary']?></td>
+          <td><?=substr($employee['Accural_time'], 0, 10)?></td>
+        </tr>
+      </tbody>
 
       <thead>
-      <tr>
-        <th>Місяць</th>
-        <th>Профспілковий внесок 1%</th>
-        <th>Сума</th>
-        <th>Дата оподаткування</th>
-        <th>Дії</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?=substr($theEmployee['Accural_time'], 0, 7)?></td>
-        <td></td>
-        <td><?=$theEmployee['Trade_union_tax_c555']?></td>
-        <td><?=substr($theEmployee['Accural_time'], 0, 10)?></td>
-        <td class="actions">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-    
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>Дії</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="actions">
+            <a href="/edit_salary.php?id_salary=<?=$employee['id']?>&&id_employee=<?=$_SESSION['id_for_salary']?>"><button class="edit-btn">Edit</button></a>
+            <a href="/edit_salary.php?id_salary_for_delete=<?=$employee['id']?>"><button class="delete-btn">Delete</button></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <?php endforeach; ?>
+  <?php endif; ?>
 
-      <thead>
-      <tr>
-        <th>Місяць</th>
-        <th>Військовий збір 5%</th>
-        <th>Сума</th>
-        <th>Дата оподаткування</th>
-        <th>Дії</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?=substr($theEmployee['Accural_time'], 0, 7)?></td>
-        <td></td>
-        <td><?=$theEmployee['Military_Service_tax_c590']?></td>
-        <td><?=substr($theEmployee['Accural_time'], 0, 10)?></td>
-        <td class="actions">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-
-      <thead>
-      <tr>
-        <th>Місяць</th>
-        <th>Сума після сплати податків</th>
-        <th>Сума</th>
-        <th>Дата нарахування</th>
-        <th>Дії</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?=substr($theEmployee['Accural_time'], 0, 7)?></td>
-        <td></td>
-        <td><?=$theEmployee['net_salary']?></td>
-        <td><?=substr($theEmployee['Accural_time'], 0, 10)?></td>
-        <td class="actions">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-
-  </table>
-
-  <button class="save-btn">Save</button>
+  
 </main>
 
 <footer>

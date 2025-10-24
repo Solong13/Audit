@@ -77,14 +77,16 @@
 				// Витягнули Всі Зп данаго робітника(плюс подумати, як їх виводити Наприклад цільки за 2 місяці)
 				$getSalaryEmployee = getSalaryCurrentEmployee($_SESSION['employee']['id_employee'], $dbh);
                 $sortedData = sortedDataEmployee($getSalaryEmployee);
+                $baseSalary = getCurrentPosition($getSalaryEmployee[0]['id_position'], $dbh);
                 echo "<pre>";
-                //var_dump($sortedData);
+                print_r($baseSalary['base_salary']);
+                echo "</pre>";
 			?>
 
 			<!-- Створити таблицю для виводу зарплати -->
             <?php if(!empty($sortedData)){
                 foreach ($sortedData as $valEmployee) { 
-                   // print_r($valEmployee);
+                   print_r($valEmployee['year']);
                     ?>
                 <br>
             <table class="pay-slip">
@@ -104,7 +106,7 @@
                 </tr>
                 <tr>
                     <td colspan="4" class="no-border left">Пл.час:23 <?= $valEmployee['All_hours_c6']; ?></td>
-                    <td colspan="5" class="no-border right">оклад/тариф <?= $valEmployee['current_salary']; ?></td>
+                    <td colspan="5" class="no-border right">оклад/тариф <?= $baseSalary['base_salary'] ?></td>
                 </tr>
 
                 <!-- Шапка табличної частини -->
@@ -131,7 +133,7 @@
                     <td>6</td>
                     <td>23</td>
                     <td><?= $valEmployee["All_hours_c6"]; ?></td>
-                    <td><?= $valEmployee["current_salary"]; ?></td>
+                    <td><?= $baseSalary['base_salary'] ?></td>
                     <td><?= $valEmployee['gross_salary']; ?></td>
                     <td><?= $valEmployee['month']; ?></td>
                     <td>532</td>
@@ -154,7 +156,7 @@
                     <td>29</td>
                     <td></td>
                     <td><?= $valEmployee["Overtime_hours_c29"]; ?></td>
-                    <td><?= $valEmployee["overtime_hours_isready"]; ?></td>
+                    <td><?= $valEmployee["money_for_overtime"]; ?></td>
                     <td></td>
                     <td><?= $valEmployee['month']; ?></td>
                     <td>590</td>
@@ -171,7 +173,7 @@
                     <td></td>
                     <td></td>
                 </tr>
-                    </tr>
+                </tr>
                     <tr>
                     <td><?= $valEmployee['month']; ?></td>
                     <td>150</td>
@@ -183,6 +185,20 @@
                     <td></td>
                     <td></td>
                 </tr>
+                <?php if ($valEmployee["Code295"]) : ?>
+                    </tr>
+                        <tr>
+                        <td><?= $valEmployee['month']; ?></td>
+                        <td>295</td>
+                        <td></td>
+                        <td></td>
+                        <td><?= $valEmployee["Code295"]; ?></td>
+                        <td></td>
+                        <td><?= $valEmployee['month']; ?></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                <?php endif; ?>
                 <tr>
                     <td colspan="4" class="bold left">РАЗОМ</td>
                     <td><?= $valEmployee['gross_salary']; ?></td>

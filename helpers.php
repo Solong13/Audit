@@ -115,21 +115,19 @@ function auto_regist(array $data)
 
 }
 
-function sortedDataEmployee(array $getSalaryEmployee) 
+function sortedDataEmployee(array $getSalaryEmployee) : array
 {
 
-    foreach($getSalaryEmployee as $value) {
+    foreach($getSalaryEmployee as $key => $value) {
         if($value["Accural_time"]) {
-
        // Додаємо нові ключі у той самий елемент
-        $getSalaryEmployee[0]['year'] = substr($value["Accural_time"], 0, 10);
-        $getSalaryEmployee[0]['time'] = substr($value["Accural_time"], 10, 20);
-        $getSalaryEmployee[0]['month'] = substr($value["Accural_time"], 5, 2);
+        $getSalaryEmployee[$key]['year'] = substr($value["Accural_time"], 0, 10);
+        $getSalaryEmployee[$key]['time'] = substr($value["Accural_time"], 10, 20);
+        $getSalaryEmployee[$key]['month'] = substr($value["Accural_time"], 5, 2);
         // Видаляємо старе поле
-        unset($getSalaryEmployee[0]["Accural_time"]);
-
-            
+        unset($getSalaryEmployee[$key]["Accural_time"]);
         }
     }
-return $getSalaryEmployee;
+
+    return $getSalaryEmployee;
 }

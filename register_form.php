@@ -6,8 +6,6 @@
     $dataOfPosition = getPosition($dbh);
     $workshop = reset($dataOfPosition);
     $slaryDependsOfPosition = null;
-    //var_dump($dataOfPosition);
-    var_dump($_POST);
 ?>
 <!DOCTYPE html>
 <html lang="en">

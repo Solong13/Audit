@@ -1,12 +1,4 @@
 <?php
-session_start();
-
-include_once ('config/connectionToDB.php');
-include_once ('helpers.php');
-include_once ('helpers_for_DB.php');
-simpleViewArray($_POST);
-
-$errors = [];
 $success = false;
 
 // Перевырка полів на заповненість
@@ -23,18 +15,29 @@ if (!empty($_POST)) {
 }
 
 if ($success) {
-    $hashPassword = password_hash($new_employee_data['password'], PASSWORD_DEFAULT);
-    $new_employee_data['password'] = $hashPassword;
-    
-    try {
-        var_dump(createEmployee($new_employee_data, $dbh));
-        $_SESSION['success'] = 'Успішна реєстрація!';
-     
-    } catch (PDOException $e) {
-        // $errors["errors"] = $e->getMessage();
-        $errors["errors="] = "You have entered the wrong data!"; // потрібна обробка помилок зрозуміла для користувача
+    $id_position = getPositionId($new_employee_data['current_position'], $dbh);
+    unset($new_employee_data['current_position']);
+    $new_employee_data = array_merge($new_employee_data, $id_position);
+
+    $hash_password = password_hash($new_employee_data['password'], PASSWORD_DEFAULT);
+    $new_employee_data['password'] = $hash_password;
+
+    $res = logInEmployee($new_employee_data, $dbh);
+
+    if (!$res) {
+        try {
+            createEmployee($new_employee_data, $dbh);
+            $_SESSION['success'] = 'Успішна реєстрація!';
+        } catch (PDOException $e) {
+            //echo $e->getMessage();
+            $_SESSION["error"] = "You have entered the wrong data!"; // потрібна обробка помилок зрозуміла для користувача
+        }
+    } else {
+         $_SESSION["error"] = "This employee alrady exists!";
     }
+
+
 }
 
-redirect('/public/index');
-exit;
+header("Location: ?page=registration");
+exit();

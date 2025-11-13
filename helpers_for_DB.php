@@ -1,5 +1,17 @@
 <?php
 
+/*
+*/
+function normalize($value, $type = 'string') {
+    if (empty($value) || $value === null) return null;
+    return match($type) {
+        'int' => (int)$value,
+        'float' => (float)$value,
+        default => trim($value),
+    };
+}
+
+
 function salaryRecord(array $records, PDO $dbh) : void
 {
     $query = ("INSERT INTO salaries (id_employee, All_hours_c6, Night_shift_hours_c11,
@@ -15,18 +27,45 @@ function salaryRecord(array $records, PDO $dbh) : void
     );
 
     $stmt = $dbh->prepare($query);
-    $stmt->execute($records);
+    $stmt->execute([
+        ':id_employee' => normalize($records['id_employee'], 'int'),
+        ':All_hours_c6' => normalize($records['All_hours_c6'], 'int'),
+        ':Night_shift_hours_c11' => normalize($records['Night_shift_hours_c11'], 'int'),
+        ':Overtime_hours_c29' => normalize($records['Overtime_hours_c29'], 'int'),
+        ':money_for_night_shift' => normalize($records['money_for_night_shift'], 'float'),
+        ':money_for_overtime' => normalize($records['money_for_overtime'], 'float'),
+        ':Code295' => normalize($records['Code295'], 'float'),
+        ':Sick_pay' => normalize($records['Sick_pay'], 'float'),
+        ':Health_allowance' => normalize($records['Health_allowance'], 'float'),
+        ':Vacation_pay' => normalize($records['Vacation_pay'], 'float'),
+        ':Salary_indexation_c150' => normalize($records['Salary_indexation_c150'], 'float'),
+        ':premium_c116' => normalize($records['premium_c116'], 'float'),
+        ':PDFO_tax_c532' => normalize($records['PDFO_tax_c532'], 'float'),
+        ':Military_Service_tax_c590' => normalize($records['Military_Service_tax_c590'], 'float'),
+        ':Trade_union_tax_c555' => normalize($records['Trade_union_tax_c555'], 'float'),
+        ':gross_salary' => normalize($records['gross_salary'], 'float'),
+        ':net_salary' => normalize($records['net_salary'], 'float'),
+    ]);
 }
 
-function createEmployee(array $data, PDO $dbh) : void
+function createEmployee(array $data, PDO $dbh)
 {
     $query = "INSERT INTO employees 
-    (id_position, fullname, password, table_number, workshop, work_experience, photo)
+    (id_position, fullname, password, table_number, workshop, work_experience, photo, employee_role)
     VALUES
-    (:id_position, :fullname, :password, :table_number, :workshop, :work_experience, :photo)";
+    (:id_position, :fullname, :password, :table_number, :workshop, :work_experience, :photo, :employee_role)";
 
     $stmt = $dbh->prepare($query);
-    $stmt->execute($data);
+    $stmt->execute([
+        'id_position' => $data['id_position'],
+        'fullname' => $data['fullname'],
+        'password' => $data['password'],
+        'table_number' => $data['table_number'],
+        'workshop' => $data['workshop'],
+        'work_experience' => $data['work_experience'] ?? 1,
+        'photo' => $data['photo'] ?? null,
+        'employee_role' => $data['employee_role']  ?? 0,
+    ]);
 }
 
 function getCurrentEmployee(string|int $id_employee, PDO $dbh): array|bool
@@ -100,9 +139,6 @@ function getSalaryCurrentEmployee(int $idEmployee, PDO $dbh) : array|bool
     ]);
     
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if (count($result) === 1) {
-        $result = $result[0];
-    }
 
     return $result;
 }
@@ -142,6 +178,17 @@ function getPosition(PDO $dbh): array
     $stmt = $dbh->prepare($query);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getPositionId(string $position_name, PDO $dbh): array
+{
+    $query = "SELECT id_position FROM positions WHERE position_name = :position_name";
+    $stmt = $dbh->prepare($query);
+    $stmt->execute([
+        ':position_name' => $position_name
+    ]);
+    $result = $stmt->fetch();
     return $result;
 }
 

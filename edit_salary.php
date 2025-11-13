@@ -1,13 +1,3 @@
-<?php
-	session_start();
-	ini_set('error_reporting', E_ALL);
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
-  include_once ('helpers.php'); 
-	include_once ('config/connectionToDB.php');
-	include_once ('helpers_for_DB.php'); 
-  ?>
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -191,7 +181,7 @@
 
 if (isset($_GET['id_salary_for_delete'])) {
   deleteOneSalary($_GET['id_salary_for_delete'], $dbh);
-  redirect('/public/index');
+  redirect('?page=index');
   die;
 }
 
@@ -204,10 +194,10 @@ $getPosition = getCurrentEmployee( $_GET['id_employee'] , $dbh);
 
   <!-- Форма внесення зарплати -->
 
-  <form class="salary-form" action="/actions/handler_for_salaries.php" method="POST">
+  <form class="salary-form" action="?page=handler_for_salaries" method="POST">
     <h3>Oновити зарплату</h3>
 
-    <input type="hidden" name="id_position" value="<?= $getPosition[0]["id_position"] ?>">
+    <input type="hidden" name="id_position" value="<?= $getPosition["id_position"] ??  $getPosition[0]["id_position"] ?>">
     <input type="hidden" name="id_salary" value="<?= $_GET['id_salary'] ?>">
     <input type="hidden" name="id_employee" value="<?= $_GET['id_employee'] ?>">
 

@@ -1,1 +1,6 @@
 AddDefaultCharset UFT-8
+RewriteEngine On
+# Увімкнути перенаправлення до папки /public
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]
+

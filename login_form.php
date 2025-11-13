@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Реєстрація найманої особи</title>
-    <link rel="stylesheet" type="text/css" href="styles/styles.css">
-</head>
-<body>
-    <form action="handler_for_loginDB.php" method="POST">
+<form action="?page=handler_for_login" method="POST">
         <div class="container">
             <h1>Авторизація особи</h1>
             <p>Будь ласка заповніть всі поля для того щоб зареєструватись</p>
@@ -21,14 +12,16 @@
             <hr>
 
             <button type="submit" class="registerbtn">Увійти</button>
-            <div class="container signin">
-            <p>Ще не маєте акаунт? <a href="registration.php">Реєстрація</a>.</p>
-            </div>
+            
+            <?php // Потрібно винести
+            if (isset($_SESSION['error'])) :
+                    foreach ($_SESSION as $key => $value) : ?>
+                        <p style="color: red;"><?= $_SESSION['error'] ; ?> 
+                        </p>
+                        <?php $_SESSION['error'] = null; ?> 
+                <?php endforeach; ?>
+            <?php endif; ?>
+
         </div>
-
-    </form>
-
-<script type="text/javascript" src="styles/file.js"></script>
-</body>
-</html>
+</form>
 

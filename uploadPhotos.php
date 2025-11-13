@@ -1,27 +1,19 @@
 <?php
-session_start();
-include_once ('config/connectionToDB.php');
-include_once ('helpers.php');   
-include_once ('helpers_for_DB.php');   
-/* Придумати захист від спаму на сервер одного і того ж фото
-    ствр папку куди буду сейвить певні дані
-    +Ств змінну де буде зберігатися файл зі шляхом збереження у користувача
-    +Ств змінну яка буде викор basename і обрізати слеші імені
-    +Ств зміннну з даним типом файла mime_content_type()
-
-    чи є тип даних в списку даних
-    чи якщо розмір більший за заданий 
-    інакше створюємо дерикторію is_dir через mkdir
-
-    потім інікальне імя через uniqid і pathinfo
-    та повне імя і куди зберігати в папку файл
-    Зберегти даний файл в нашу дерикторію зберігання файлів
-
-*/
 
 $errorsOfPhotos = [];
 $success = null;
-if (isset($_POST['submit']) && ($_FILES["image"]["error"]) === 0) {
+$id_employee = null;
+$marker_user = false;
+
+if (isset($_POST['submit_employee'])) {
+    $id_employee = $_POST["id_employee"];
+} else {
+    $id_employee = $_SESSION['employee']['id_employee'];
+    $marker_user = true;
+}
+
+if (($_FILES["image"]["error"]) === 0) {
+
         $uploadDir = 'uploads/';
         $fileTmp = $_FILES['image']['tmp_name'];// шлях до локальної дерикторії тимчасового зберігання на сервері
         $fileName = basename($_FILES['image']['name']);// обрізає слеші віндовс, лінокс
@@ -52,12 +44,14 @@ if (isset($_POST['submit']) && ($_FILES["image"]["error"]) === 0) {
                    // $success = "✅ Файл успішно завантажено";
 
                     if (isset($_SESSION["employee"])) {
-                        addPhotoEmployee($destination, $_SESSION['employee']['id_employee'], $dbh);
-                        $_SESSION['employee'] = 
-                            [
-                                "photo" => $destination,
-                            ];
-                        redirect('/public/index');
+                        addPhotoEmployee($destination, $id_employee, $dbh);
+                        if ($marker_user) {
+                            $_SESSION['employee'] = 
+                                [
+                                    "photo" => $destination,
+                                ];
+                        }
+                        header("Location: ?page=portfolio");
                         exit();
                     } else {
                         $errorsOfPhotos['error']  = "❌ Спочатку авторезуйтесь";
@@ -72,12 +66,12 @@ if (isset($_POST['submit']) && ($_FILES["image"]["error"]) === 0) {
          
         }
         
-}else {
+} else {
     $errorsOfPhotos['error']  = "❌ Файл не обрано або сталася помилка.";
 }
 
 if (!empty($errorsOfPhotos['error'])) {
-    $_SESSION['photoError'] = $errorsOfPhotos;
-    redirect('/public/index');
+    $_SESSION['error'] = $errorsOfPhotos;
+    header("Location: ?page=portfolio");
     exit();
 } 

@@ -1,8 +1,7 @@
 <?php
-include_once ('config/connectionToDB.php');
-include_once ('helpers.php');   
-include_once ('helpers_for_DB.php');   
-
+require_once (__DIR__ .  '/bootstrap.php');
+include_once (__DIR__ . '/helpers_for_DB.php');  
+include_once (__DIR__ . '/helpers.php'); 
 
 function salaryCalculation(array $data, PDO $dbh) 
 {
@@ -10,8 +9,7 @@ function salaryCalculation(array $data, PDO $dbh)
     $day_personal_hours = 168;
 
     //simpleViewArray($_POST);  
-    $all_data = clenFeilds($_POST); 
-    //simpleViewArray($all_data); 
+    $all_data = clenFeilds($data); 
 
     $current_position = getCurrentPosition($all_data["id_position"], $dbh);
 
@@ -65,6 +63,6 @@ function salaryCalculation(array $data, PDO $dbh)
         salaryRecord($all_data, $dbh);
     }
 
-    redirect('/public/index');
+    redirect('?page=index');
     die;
 }

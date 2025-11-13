@@ -1,13 +1,3 @@
-<?php
-	session_start();
-	ini_set('error_reporting', E_ALL);
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
-
-	include_once ('config/connectionToDB.php');
-	include_once ('helpers_for_DB.php'); 
-  ?>
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -194,29 +184,40 @@ if (isset($_REQUEST['id_employee'])) {
   $_SESSION['id_for_salary'] = $_REQUEST['id_employee'];
 }
 
+// якщо запис про ЗП існує
 $theEmployee = getCurrentEmployee(trim(htmlspecialchars($_SESSION['id_for_salary'])), $dbh);
-if (empty($theEmployee)) {
-  $theNewEmployee = (getEmployee($_SESSION['id_for_salary'],  $dbh));
-}
+$photo = "";
 
+// Для того щоб зробити багтомірний масив і для зручності виводу інших багатомірних масивів
 if (isset($theEmployee['id_position'])) {
   $theEmployee = [$theEmployee];
 }
+
+// коли немає ще даних по ЗП
+if (empty($theEmployee)) {
+  $theNewEmployee = getEmployee($_SESSION['id_for_salary'],  $dbh);
+  $photo = $theNewEmployee['photo'];
+} else {
+  $photo = $theEmployee[0]["photo"];
+}
+
+
 ?> 
 <main>
   <!-- Верхній блок -->
   <div class="profile-section">
     <div class="photo-upload">
-        <img src="<?=$theEmployee[0]['photo'] ?? $theNewEmployee['photo']?>" alt="Фото працівника">
-      <form method="post" enctype="multipart/form-data">
-        <input type="file" name="photo">
-        <button type="submit">Змінити фото</button>
+      <form action="?page=uploadPhotos" method="post" enctype="multipart/form-data">
+        <img src=<?= $photo ?? "assets/images/avatar.jpg"?> alt="Фото працівника">
+        <input type="file" name="image">
+        <input type="hidden" name="id_employee" value="<?= $theEmployee[0]['id_employee'] ??  $theNewEmployee['id_employee']?>">
+        <button type="submit" name="submit_employee">Змінити фото</button>
       </form>
     </div>
 
     <div class="employee-info">
       <h2><?=$theEmployee[0]['fullname'] ?? $theNewEmployee['fullname']?></h2>
-      <p><b>Посада:</b><?=$theEmployee[0]['fullname'] ?? $theNewEmployee['fullname']?></p>
+      <p><b>Посада:</b><?=$theEmployee[0]['position_name'] ?? $theNewEmployee['position_name']?></p>
       <p><b>Табельний №:</b><?=$theEmployee[0]['table_number'] ?? $theNewEmployee['table_number']?></p>
       <p><b>Цех:</b><?=$theEmployee[0]['workshop'] ?? $theNewEmployee['workshop']?></p>
       <p><b>Оклад:</b><?=$theEmployee[0]['base_salary'] ?? $theNewEmployee['base_salary']?> грн</p>
@@ -225,11 +226,11 @@ if (isset($theEmployee['id_position'])) {
 
   <!-- Форма внесення зарплати -->
 
-  <form class="salary-form" action="../actions/handler_for_salaries.php" method="POST">
+  <form class="salary-form" action="?page=handler_for_salaries" method="POST">
     <h3>Додати/оновити зарплату</h3>
 
     <input type="hidden" name="id_employee" value="<?= $_SESSION['id_for_salary'] ?? null?>">
-    <input type="hidden" name="id_position" value="<?= $theEmployee['id_position'] ?? null ?>">
+    <input type="hidden" name="id_position" value="<?= $theEmployee[0]['id_position'] ?? $theNewEmployee["id_position"] ?>">
 
     <label>Відпрацьовано годин</label>
     <input type="number" name="All_hours_c6" placeholder="180" value="">
@@ -241,13 +242,13 @@ if (isset($theEmployee['id_position'])) {
     <input type="number" name="Overtime_hours_c29" placeholder="180" value="">
 
     <label>Заводська премія</label>
-    <input type="number" name="premium_c116" placeholder="180" value="">
+    <input type="number" name="premium_c116" step="0.01" placeholder="180" value="">
     
     <label>Індексація</label>
-    <input type="number" name="Salary_indexation_c150" placeholder="180" value="">
+    <input type="number" name="Salary_indexation_c150" step="0.01" placeholder="180" value="">
 
     <label>Цехова премія</label>
-    <input type="number" name="Code295" placeholder="180" value="">
+    <input type="number" name="Code295" step="0.01" placeholder="180" value="">
 
     <label>Відпускні</label>
     <input type="number" name="Vacation_pay" placeholder="0" value="">
@@ -270,7 +271,7 @@ if (isset($theEmployee['id_position'])) {
   <?php if (isset($theEmployee)) : ?>
     <?php foreach ($theEmployee as $employee) : ?> 
     <!-- Таблиця зарплат -->
-    <h1>Зарплата</h1>
+    <h1>Зарплата за <?= substr($employee['Accural_time'], 0, 10); ?></h1>
     <table>
       <thead>
         <tr>
@@ -477,8 +478,8 @@ if (isset($theEmployee['id_position'])) {
           <td></td>
           <td></td>
           <td class="actions">
-            <a href="/edit_salary.php?id_salary=<?=$employee['id']?>&&id_employee=<?=$_SESSION['id_for_salary']?>"><button class="edit-btn">Edit</button></a>
-            <a href="/edit_salary.php?id_salary_for_delete=<?=$employee['id']?>"><button class="delete-btn">Delete</button></a>
+            <a href="?page=edit_salary&&id_salary=<?=$employee['id']?>&&id_employee=<?=$_SESSION['id_for_salary']?>"><button class="edit-btn">Edit</button></a>
+            <a href="?page=edit_salary&&id_salary_for_delete=<?=$employee['id']?>"><button class="delete-btn">Delete</button></a>
           </td>
         </tr>
       </tbody>

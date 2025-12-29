@@ -1,0 +1,18 @@
+{
+    "name": "user/audit",
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/",
+            "Core\\": "core/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Solong13",
+            "email": "limbo24gg@gmaol.com"
+        }
+    ],
+    "require": {
+        "symfony/var-dumper": "^6.4"
+    }
+}

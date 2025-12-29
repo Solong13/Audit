@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Якщо файл або директорія існують — пропускаємо
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Усе інше спрямовуємо на index.php
+RewriteRule ^(.*)$ index.php [L,QSA]

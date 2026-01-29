@@ -11,7 +11,7 @@ class LoginController extends Controller
 {
     public LoginAuthService $loginAuthService;
     public LoginAuthPostService $LoginAuthPostService;
-    public Session $session;
+    private Session $session;
 
     public function __construct(Session $session)
     {   
@@ -22,7 +22,9 @@ class LoginController extends Controller
     }
 
     public function loginAction() 
-    {   // Подумати що робити з перезавантаженням та повторним відправленням пост даних??
+    {   
+        //dd($this->session->get());
+        // Подумати що робити з перезавантаженням та повторним відправленням пост даних??
         $this->session->delete('error');
             
         $readyData = $this->LoginAuthPostService->serviceDataClear();
@@ -34,7 +36,7 @@ class LoginController extends Controller
             }
         }
         
-        echo $this->view->render('login', ['error' => $this->session->get('error')]);
+        return $this->view->render('login', ['error' => $this->session->get('error')]);
     }
 
 }

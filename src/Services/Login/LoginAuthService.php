@@ -25,32 +25,28 @@ class LoginAuthService
         $employee = $this->loginModel->logInEmployee($dataFromUserForLogin);
 
         if(!empty($employee)) {
-                if ($employee) {
-                    if (password_verify($this->post->get('password'), $employee['password'])) {
-                        if(mb_strtolower($this->post->get('fullname')) == mb_strtolower($employee["fullname"])) {
+            if (password_verify($this->post->get('password'), $employee['password'])) {
+                if(mb_strtolower($this->post->get('fullname')) == mb_strtolower($employee["fullname"])) {
 
-                            $this->session->add('employee',  
-                                [
-                                    "id_employee" => $employee["id_employee"],
-                                    "table_number" => $employee["table_number"],
-                                    "fullname" => $employee["fullname"],
-                                    "photo" => $employee["photo"],
-                                    "employee_role" => $employee["employee_role"]
-                                ]
-                            );    
+                    $this->session->add('employee',  
+                        [
+                            "id_employee" => $employee["id_employee"],
+                            "table_number" => $employee["table_number"],
+                            "fullname" => $employee["fullname"],
+                            "photo" => $employee["photo"],
+                            "employee_role" => $employee["employee_role"]
+                        ]
+                    );    
                             
-                        }
+                }
 
-                        return true;
+                return true;
                         
-                    } else {
-                        $this->session->add('error',  'Пароль неправильный.');
-                    }
-                } else { 
-                    $this->session->add('error',  'Користувача не знайдено');
+                } else {
+                    $this->session->add('error',  'Пароль неправильный.');
                 }
         } else {
-            $this->session->add('error',  'Невірно заповнені поля');
+            $this->session->add('error',  'Користувача не знайдено');
         }
         return false;
     }

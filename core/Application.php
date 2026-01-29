@@ -7,10 +7,12 @@ class Application
     // protected string $uri;
     // public Request $request;
     // public static Application $app;
-    public Session $session;
-    public Post $post;
+
+    private Session $session;
+    private Post $post;
     public Router $router;
-    public View $view;
+    private View $view;
+    private Request $request;
 
     public function __construct()
     {
@@ -18,35 +20,20 @@ class Application
         // $this->uri = $_SERVER['QUERY_STRING'];
         // $this->request = new Request($this->uri);
         $this->session = new Session();
-        $this->router = new Router($this->session);
-        // $this->view = new View();
-        // $this->post = new Post();
+        $this->request = new Request();
+        $this->router = new Router($this->session, $this->request);
+        $this->view = new View();
+        $this->post = new Post();
     }
 
     public function run() 
     {
-        // $cechkEmployee = $this->cechkAuth();
-        // if (!$cechkEmployee) {
-        //     header("Location: login");
-        //     exit;
-        // }
-        $this->router->run();
-        // if($cechkEmployee) {
-        //    echo $this->view->render('portfolio', $resultOfTheAutorization ?? []);
-        // } else {
-        //     if (!empty($this->post->get('fullname')) && !empty($this->post->get('password'))) {
-        //         $this->router->run();
-        //     } else {
-        //         echo $this->view->render('login', $resultOfTheAutorization ?? []);
-        //     }
-            
-        // }
-    }
-
-    private function cechkAuth() : bool 
-    {
-       return !empty($this->session->get('employee')) ? true : false;
-
+        $this->router->resolve();
     }
 
 }
+
+/* Навыщо нам тоді цей клас?????????????????
+Через новий механызм маршрутів, їх реєстрації і реквест класа, ламається
+ще і сесії, пост, класи які я створював, як окремі обгортки
+*/

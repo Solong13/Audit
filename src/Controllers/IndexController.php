@@ -25,12 +25,12 @@ class IndexController extends Controller
     public function indexAction() 
     {
         
-        $dataEmployee = $this->indexService->getDataFromClient();
+        //$dataEmployee = $this->indexService->getDataFromClient();
 
         // Потрібно перевірити чи авторізований автор і перекинуть на логін пейдж
         //echo $this->view->render('portfolio', $dataEmployee); ?? чому це не працюэ
-                      header("Location: portfolio");
-                exit;
+        header("Location: portfolio");
+        exit;
     }
 
 }

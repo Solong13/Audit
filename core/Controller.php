@@ -20,6 +20,13 @@ abstract class Controller
         $this->get = new Get(); 
     }
 
+    // Метод для первірки ролі Адмін ролі!
+    public function hasRole(string $role): bool 
+    {
+        return ($role == 1) ? true : false;
+    }
+
+    // Редірект
     protected function redirect(string $path): void
     {
         header("Location: $path");

@@ -38,8 +38,67 @@ footer, header, hgroup, menu, nav, section {
   * {
     box-sizing: border-box;
   }
-  
-  
+
+/* Пагінація  */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  text-decoration: none;
+  color: #007bff;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  /* Прибираємо подвійні рамки між кнопками */
+  margin-left: -1px; 
+  transition: all 0.2s ease-in-out;
+}
+
+/* Округлення кутів лише для першої та останньої кнопок */
+.pagination li:first-child .pagination-link {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  margin-left: 0;
+}
+
+.pagination li:last-child .pagination-link {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+/* Стан при наведенні */
+.pagination-link:hover {
+  background-color: #e9ecef;
+  color: #0056b3;
+  z-index: 1; /* Щоб рамка була зверху при наведенні */
+  position: relative;
+}
+
+/* Активна сторінка */
+.pagination-link.active {
+  z-index: 2;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  cursor: default;
+}
+/* Пагінація  */
+
 main {
 	box-sizing: border-box;
     font-family: Arial, sans-serif;
@@ -179,14 +238,8 @@ main {
   }
 
 
-
-
-
-
-
-
 .forAvatar {
-	margin-top: 12px;
+	margin-top: 44px;
 	font-size: 14px;
 }
 

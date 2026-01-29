@@ -2,48 +2,37 @@
 namespace Src\Controllers;
 
 use Core\Controller;
-
 use Core\Session;
+use Src\Services\Portfolio\PortfolioService;
+use Src\Services\PaginationService;
 use Src\Models\PortfolioModel;
 
 class PortfolioController extends Controller
 {
-    private PortfolioModel $portfolioModel;
     private Session $session;
+    private PortfolioService $portfolioService;
 
     public function __construct(Session $session)
     {   
         parent::__construct(); 
         $this->session = $session;
-        $this->portfolioModel = new PortfolioModel();
 
+        $this->portfolioService = new PortfolioService(new PaginationService(), new PortfolioModel());
     }
 
-    /*логіка така, що користувач у нас вже Є, але потрібно ще тестити логіку програми
-    ЯКЩО КОРИСТУВАЧ Є -
-    - МИ витягуємо необхідні дані відповідному користувачу
-    - Адміну - дані всіх користувачів
-    - Працівнику його Зп
-    */
-
-    // Якщо зайшов адмін
     public function portfolioAction()
     {
-        $roleEmployee = $this->session->get('employee'); // Чому нулл якщо це супер глобальний масив
+        $roleEmployee = $this->session->get('employee');
+        $chekRoleEmployee = parent::hasRole((int)$roleEmployee['employee_role']);
 
-        if ($roleEmployee) { 
-            if ((int)$roleEmployee['employee_role'] === 1) {
-                $resultOfTheAutorization = $this->portfolioModel->getAllEmployeeAndTheirPositions();
-                echo $this->view->render('portfolio_admin', $resultOfTheAutorization);
-            } else {
-                $getSalaryEmployee =$this->portfolioModel->getSalaryCurrentEmployee($roleEmployee['id_employee']);
-                $sortedData = sortedDataEmployee($getSalaryEmployee);
-                // Ці дані потрібно дод в масив???
-                //$baseSalary = $this->portfolioModel->getCurrentPosition($getSalaryEmployee['id_position'] ?? $getSalaryEmployee[0]['id_position']);
-                echo $this->view->render('portfolio_employee', $sortedData);
-            }
+        $page = isset($request['page']) ? (int)$request['page'] : 1;
+
+        if ($chekRoleEmployee ) {
+            return $this->view->render('portfolio_admin', $this->portfolioService->getSomeEmployees($page));
         } else {
-            $this::redirect('login');
+            $getSalaryEmployee = $this->portfolioService->getSomeSalaries($roleEmployee['id_employee'], $page);
+            //dd( $sortedData);
+            return $this->view->render('portfolio_employee', $getSalaryEmployee ?? []);
         }
 
     }

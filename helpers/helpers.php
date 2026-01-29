@@ -1,15 +1,15 @@
 <?php
 
 // Для того щоб зручніше було викликати обєкт, коротший код
-function app(): \Core\Application
-{
-    return \Core\Application::$app;
-}
+// function app(): \Core\Application
+// {
+//     return \Core\Application::$app;
+// }
 
-function request() : \Core\Request
-{
-    return app()->request;
-}
+// function request() : \Core\Request
+// {
+//     return app()->request;
+// }
 
 // Найпростіша валідація, обрізання пробілів побокам та ігнорування html-символів
 const USERSDATA = 'data/user_data.txt';
@@ -38,8 +38,8 @@ function validFields(array $fileds)
         } 
     }
     
-    if (isset($fileds['table_number'])) {
-        if ((int)strlen($fileds['table_number']) < 1 || (int)strlen($fileds['table_number']) > 6) {
+    if (isset($fileds['password'])) {
+        if ((int)strlen($fileds['password']) < 4 || (int)strlen($fileds['password']) > 6) {
             $errors[] = "Табельний номер повинен складати від 1 до 6 цифир";
         }
     }
@@ -127,6 +127,7 @@ function auto_regist(array $data)
 
 }
 
+// функція для перебору необхідного нам виду дати
 function sortedDataEmployee(array $getSalaryEmployee) 
 {
     foreach ($getSalaryEmployee as $key => $value) {

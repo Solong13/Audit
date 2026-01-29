@@ -18,6 +18,6 @@ class LogoutController extends Controller
     public function logoutAction() 
     {
         $this->session->clear();
-        $this::redirect('login');
+        $this::redirect('/');
     }
 }

@@ -13,5 +13,5 @@ It`s simple soft for payroll employees and admin
 
 ### Installation
 ```bash
-git clone https://github.com/username/project-name.git
+git clone https://github.com/Solong13/Audit.git
 cd project-name

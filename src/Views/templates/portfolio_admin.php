@@ -7,11 +7,11 @@
 <ol class="employee-list">
 
         <h3>Список працівників цеху</h3>
-    <?php foreach ($data['dataForView'] as $employee) :?>
+    <?php foreach ($data['rows'] as $val) : ?>
     
   <li>
-    <a href="/employee/salary/<?=$employee['id_employee'];?>"><?= $employee['fullname'];?></a>
-    <span class="position"><?= ' - ' . $employee['position_name'];?></span>
+    <a href="/employee/salary/<?=$val['id_employee'];?>"><?= $val['fullname'];?></a>
+    <span class="position"><?= ' - ' . $val['position_name'];?></span>
   </li>
 
   <?php endforeach; ?>

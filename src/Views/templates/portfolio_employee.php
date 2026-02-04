@@ -1,4 +1,3 @@
-<?php //dd($data) ?> 
 <!-- Portfolio -->
 <section id="portfolio" class="two">
 	<div class="container">
@@ -8,8 +7,8 @@
             <h3>Фінансові надходження працівника</h3>
 
 			<!-- Створити таблицю для виводу зарплати -->
-            <?php if(isset($data) && !empty($data)) {
-                foreach ($data['dataForView'] as $key => $valEmployee) { ?>
+            <?php if(isset($data['rows']) && !empty($data['rows'])) {
+                foreach ($data['rows'] as $key => $valEmployee) { ?>
                 <br>
             <table class="pay-slip">
                 <!-- Заголовок -->

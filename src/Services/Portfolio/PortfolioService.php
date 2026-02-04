@@ -14,37 +14,28 @@ class PortfolioService
         $this->portfolioModel = $portfolioModel;
     }
 
-    public function getSomeEmployees(int|string $page) 
+    public function getSomeEmployees(int|string $page) : array
     {
-        $result = $this->paginationService->paginate(
+        return $this->paginationService->paginate(
             $this->portfolioModel,
             $page,
-            5,
-            'id_employee',
+            2,
             'employees'
         );
-
-        $result['dataForView'] =
-            $this->portfolioModel->getAllEmployeeAndTheirPositions();
-
-        return $result;
     }
 
     public function getSomeSalaries(int|string $id, int|string $page) : array|bool
     {   
-        $listOfSalaries = $this->portfolioModel->getSalaryCurrentEmployee($id);
+
+        $result = $this->paginationService->paginate(
+            $this->portfolioModel,
+            $page,
+            1,
+            'salaries',
+            $id,
+        );
+
+        return $result ? $result : false;
         
-        if (!empty($listOfSalaries)) {
-            $result = $this->paginationService->paginate(
-                $this->portfolioModel,
-                $page,
-                5,
-                'id_employee',
-                'salaries'
-            );
-            $result['dataForView'] = sortedDataEmployee($listOfSalaries);
-            return $result;
-        }
-        return false;
     }
 }

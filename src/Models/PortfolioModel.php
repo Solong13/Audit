@@ -4,8 +4,9 @@ namespace Src\Models;
 
 use Core\Model;
 use \PDO;
+use Src\Interfaces\RepositoryInterface;
 
-class PortfolioModel extends Model 
+class PortfolioModel extends Model implements RepositoryInterface
 {
     protected string $table = 'salaries';
 
@@ -14,52 +15,94 @@ class PortfolioModel extends Model
         parent::__construct();
     }
 
-    public function countAllRep($table)
+    public function countAll(string $table): int 
     {
-        return parent::countAll($table);
+        return (int)$this->db
+            ->query("SELECT COUNT(*) FROM {$table}")
+            ->fetchColumn();
     }
 
-    public function findPaginatedRep(int $limit, int $offset, string $table, string $orderBy = 'id DESC')
+    public function countAllById(string $table, int|string $id): int 
     {
-        return parent::findPaginated($limit, $offset, $table, $orderBy);
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM {$table} WHERE id_employee = :id");
+        $stmt->execute(['id' => $id]);
+        return (int)$stmt->fetchColumn();
     }
 
-
-    function getAllEmployeeAndTheirPositions(): array
+    public function findPaginated(int $limit, int $offset, string $table, string $orderBy): array 
     {
-        $query = "SELECT * FROM positions p
-        INNER JOIN employees e ON p.id_position = e.id_position LIMIT 5";
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->prepare("
+            SELECT * FROM positions p
+            INNER JOIN employees as e ON p.id_position = e.id_position
+            ORDER BY id_employee {$orderBy}
+            LIMIT :limit OFFSET :offset
+        ");
+
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    function getSalaryCurrentEmployee(int $idEmployee) : array
+    public function findPaginatedById(int $limit, int $offset, string $table, int|string $id, string $orderBy): array 
     {
-        $query = "SELECT * FROM salaries AS s 
-        INNER JOIN employees as e ON s.id_employee = e.id_employee 
-        INNER JOIN positions as p ON e.id_position = p.id_position 
-        WHERE e.id_employee = :id_employee";
+        $stmt = $this->db->prepare("
+            SELECT * FROM salaries AS s 
+            INNER JOIN employees as e ON s.id_employee = e.id_employee 
+            INNER JOIN positions as p ON e.id_position = p.id_position
+            WHERE e.id_employee = :id_employee
+            ORDER BY s.id_employee {$orderBy}
+            LIMIT :limit OFFSET :offset 
+        ");
         
-        $stmt = $this->db->prepare($query);
-        $stmt->execute([
-            ':id_employee' => $idEmployee
-        ]);
-        
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->bindValue(':id_employee', $id, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->execute();
 
-        return $result;
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
-    function getCurrentPosition(int|string $id_position): array
-    {
-        $query = "SELECT base_salary FROM positions
-        WHERE id_position = :id_position";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute([
-            ':id_position' => (int)$id_position
-        ]);
-        $result = $stmt->fetch();
-        return $result;
-    }
+
+
+
+
+
+    // function getAllEmployeeAndTheirPositions(): array
+    // {
+    //     $query = "SELECT * FROM positions p
+    //     INNER JOIN employees e ON p.id_position = e.id_position LIMIT 5";
+    //     $stmt = $this->db->prepare($query);
+    //     $stmt->execute();
+    //     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //     return $result;
+    // }
+
+    // function getSalaryCurrentEmployee(int $idEmployee) : array
+    // {
+    //     $query = "SELECT * FROM salaries AS s 
+    //     INNER JOIN employees as e ON s.id_employee = e.id_employee 
+    //     INNER JOIN positions as p ON e.id_position = p.id_position 
+    //     WHERE e.id_employee = :id_employee";
+        
+    //     $stmt = $this->db->prepare($query);
+    //     $stmt->execute([
+    //         ':id_employee' => $idEmployee
+    //     ]);
+        
+    //     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //     return $result;
+    // }
+    // function getCurrentPosition(int|string $id_position): array
+    // {
+    //     $query = "SELECT base_salary FROM positions
+    //     WHERE id_position = :id_position";
+    //     $stmt = $this->db->prepare($query);
+    //     $stmt->execute([
+    //         ':id_position' => (int)$id_position
+    //     ]);
+    //     $result = $stmt->fetch();
+    //     return $result;
+    // }
 }

@@ -25,13 +25,14 @@ class PortfolioController extends Controller
         $roleEmployee = $this->session->get('employee');
         $chekRoleEmployee = parent::hasRole((int)$roleEmployee['employee_role']);
 
-        $page = isset($request['page']) ? (int)$request['page'] : 1;
+        $page = $this->get->get('page') ? (int)$this->get->get('page') : 1;
 
-        if ($chekRoleEmployee ) {
+        if ($chekRoleEmployee) {
             return $this->view->render('portfolio_admin', $this->portfolioService->getSomeEmployees($page));
         } else {
             $getSalaryEmployee = $this->portfolioService->getSomeSalaries($roleEmployee['id_employee'], $page);
-            //dd( $sortedData);
+            $dateRedactor = sortedDataEmployee($getSalaryEmployee['rows']);
+            $getSalaryEmployee['rows'] = $dateRedactor;
             return $this->view->render('portfolio_employee', $getSalaryEmployee ?? []);
         }
 

@@ -7,14 +7,12 @@
 <ol class="employee-list">
 
     <?php 
-    // Подумати як витягувати дані з сесії але не тут
     if ((int)(isset($data["employee_role"]) || $data[0]["employee_role"]) === 1) : 
 
     ?>
         <h3>Список працівників цеху</h3>
     <?php
         // Вивести всіх працівників
-        //$allEmployee = getAllEmployeeAndTheirPositions($dbh);
         foreach ($data as $employee) :     
     ?>
   <li>
@@ -38,27 +36,6 @@
 
         <?php else: ?> 
             <h3>Фінансові надходження працівника</h3>
-			<?php 
-           
-
-				// Витягнули Всі Зп данаго робітника(плюс подумати, як їх виводити Наприклад цільки за 2 місяці)
-				// $getSalaryEmployee = getSalaryCurrentEmployee($_SESSION['employee']['id_employee'], $dbh);
-                
-                // if (!$getSalaryEmployee) {
-                //     echo 'Надходжень не знайдено!';
-    
-                // } else { 
-                //     $sortedData = sortedDataEmployee($getSalaryEmployee);
-                //     $baseSalary = getCurrentPosition($getSalaryEmployee['id_position'] ?? $getSalaryEmployee[0]['id_position'], $dbh);
-                // }
-               
-                // echo "<pre>";
-                // print_r($sortedData);
-                // echo "</pre>";
-
-                // Масив якщо один то [], якщо їх багато то як зробити
-       
-			?>
 
 			<!-- Створити таблицю для виводу зарплати -->
             <?php if(!empty($data)) {

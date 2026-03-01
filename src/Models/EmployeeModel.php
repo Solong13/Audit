@@ -12,7 +12,7 @@ class EmployeeModel extends Model
         parent::__construct();
     }
 
-    public function getCurrentEmployee( $id_employee): array
+    public function getCurrentEmployee($id_employee) : array
     {
         $query = "SELECT * FROM employees AS e
         JOIN salaries AS s ON e.id_employee = s.id_employee

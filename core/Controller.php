@@ -12,7 +12,6 @@ abstract class Controller
     protected Post $post;
     protected Get $get;
 
-    // Ініціалізуємо $view через DI
     public function __construct()
     {
         $this->view = new View();
@@ -20,14 +19,12 @@ abstract class Controller
         $this->get = new Get(); 
     }
 
-    // Метод для первірки ролі Адмін ролі!
-    public function hasRole(string $role): bool 
+    public function hasRole(string|int $role) : bool 
     {
         return ($role == 1) ? true : false;
     }
 
-    // Редірект
-    protected function redirect(string $path): void
+    protected function redirect(string $path) : void
     {
         header("Location: $path");
         die;

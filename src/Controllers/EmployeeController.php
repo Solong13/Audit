@@ -38,14 +38,12 @@ class EmployeeController extends Controller
             $employeeSalaryCalculationService->salaryCalculation($this->post->get());
             $this::redirect('/employee/salary/'.$this->post->get('id_employee'));
         } else {
-            // якщо дані внесені не всі
             $this->session->add('errorSalary', 'Fill the fields!');
             
             $this::redirect('/employee/salary/'.$this->post->get('id_employee'));
         }
     }
 
-    // Вивід форми з даними конкретної ЗП
     public function editAction(string $id_salary) 
     {
         $editSalaryService = new EditSalaryService();

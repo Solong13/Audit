@@ -4,10 +4,6 @@ namespace Core;
 
 class Application 
 {
-    // protected string $uri;
-    // public Request $request;
-    // public static Application $app;
-
     private Session $session;
     private Post $post;
     public Router $router;
@@ -16,9 +12,6 @@ class Application
 
     public function __construct()
     {
-        // self::$app = $this;
-        // $this->uri = $_SERVER['QUERY_STRING'];
-        // $this->request = new Request($this->uri);
         $this->session = new Session();
         $this->request = new Request();
         $this->router = new Router($this->session, $this->request);
@@ -32,8 +25,3 @@ class Application
     }
 
 }
-
-/* Навыщо нам тоді цей клас?????????????????
-Через новий механызм маршрутів, їх реєстрації і реквест класа, ламається
-ще і сесії, пост, класи які я створював, як окремі обгортки
-*/

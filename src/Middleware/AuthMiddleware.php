@@ -13,8 +13,9 @@ class AuthMiddleware
         $this->session = $session;
     }
 
-    public function handle(): void {
-        if (empty($this->session->has('employee'))) {
+    public function handle(): void 
+    {
+        if (!$this->session->has('employee')) {
             header('Location: /login');
             exit;
         }

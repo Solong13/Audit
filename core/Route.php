@@ -45,8 +45,4 @@ class Route {
         return true;
     }
 
-    // public function matches(\Core\Request $request): bool {
-    //     return $this->method === $request->getMethod()
-    //         && $this->path === $request->getPath();
-    // }
 }

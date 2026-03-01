@@ -37,7 +37,6 @@ class LogUpService
     public function logUp(array $data) : bool
     {
         $success = false;
-        // Перевырка полів на заповненість
         if (!empty($data)) {
             $new_employee_data = clenFeilds($data);
             $valid_data_user = validFields($new_employee_data);
@@ -65,7 +64,7 @@ class LogUpService
                     return true;
                 } catch (\PDOException $e) {
                     //$e->getMessage();
-                    $this->session->add('error', 'Something is wrong!'); // потрібна обробка помилок зрозуміла для користувача
+                    $this->session->add('error', 'Something is wrong!');
                 }
             } else {
                 $this->session->add('error','This employee alrady exists!');

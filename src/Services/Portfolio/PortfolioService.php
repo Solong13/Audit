@@ -19,14 +19,13 @@ class PortfolioService
         return $this->paginationService->paginate(
             $this->portfolioModel,
             $page,
-            2,
+            5,
             'employees'
         );
     }
 
     public function getSomeSalaries(int|string $id, int|string $page) : array|bool
     {   
-
         $result = $this->paginationService->paginate(
             $this->portfolioModel,
             $page,
@@ -35,7 +34,6 @@ class PortfolioService
             $id,
         );
 
-        return $result ? $result : false;
-        
+        return $result;
     }
 }

@@ -15,7 +15,6 @@ class EditSalaryService
 
     public function editSalary(int $id_salary)
     {
-        //return $this->employeeModel->getCurrentEmployee($id_salary);
         return $this->employeeModel->getOneSalary($id_salary);
     }
 }

@@ -45,16 +45,13 @@ class Router
                 
                 // Це деструктуризація масиву
                 [$controller, $action] = $route->handler;
-                //dd([$controller, $action]);
                 (new $controller($this->session))->$action(...array_values($route->params));
                 return;
             }
         }
 
-        // $controller = new NotFoundController($this->session);
-        // $controller->notFoundAction();
+        $controller = new NotFoundController($this->session);
+        $controller->notFoundAction();
         
-        http_response_code(404);
-        echo '404 Not Found';
     }
 }

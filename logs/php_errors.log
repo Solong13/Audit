@@ -1,0 +1,116 @@
+[16-Feb-2026 12:40:52 UTC] PHP Fatal error:  Uncaught Error: Class "D4otenv\Dotenv" not found in D:\1A_Projects\Audit\src\bootstrap.php:16
+Stack trace:
+#0 D:\1A_Projects\Audit\public\index.php(5): require_once()
+#1 {main}
+  thrown in D:\1A_Projects\Audit\src\bootstrap.php on line 16
+[16-Feb-2026 12:40:53 UTC] PHP Fatal error:  Uncaught Error: Class "D4otenv\Dotenv" not found in D:\1A_Projects\Audit\src\bootstrap.php:16
+Stack trace:
+#0 D:\1A_Projects\Audit\public\index.php(5): require_once()
+#1 {main}
+  thrown in D:\1A_Projects\Audit\src\bootstrap.php on line 16
+[01-Mar-2026 14:44:26 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] No such file or directory in /var/www/Audit/src/bootstrap.php:17
+Stack trace:
+#0 /var/www/Audit/src/bootstrap.php(17): PDO->__construct('mysql:host=loca...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/public/index.php(5): require_once('/var/www/Audit/...')
+#2 {main}
+  thrown in /var/www/Audit/src/bootstrap.php on line 17
+[01-Mar-2026 14:44:27 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] No such file or directory in /var/www/Audit/src/bootstrap.php:17
+Stack trace:
+#0 /var/www/Audit/src/bootstrap.php(17): PDO->__construct('mysql:host=loca...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/public/index.php(5): require_once('/var/www/Audit/...')
+#2 {main}
+  thrown in /var/www/Audit/src/bootstrap.php on line 17
+[01-Mar-2026 14:49:10 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] No such file or directory in /var/www/Audit/src/bootstrap.php:17
+Stack trace:
+#0 /var/www/Audit/src/bootstrap.php(17): PDO->__construct('mysql:host=loca...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/public/index.php(5): require_once('/var/www/Audit/...')
+#2 {main}
+  thrown in /var/www/Audit/src/bootstrap.php on line 17
+[01-Mar-2026 14:49:11 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] No such file or directory in /var/www/Audit/src/bootstrap.php:17
+Stack trace:
+#0 /var/www/Audit/src/bootstrap.php(17): PDO->__construct('mysql:host=loca...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/public/index.php(5): require_once('/var/www/Audit/...')
+#2 {main}
+  thrown in /var/www/Audit/src/bootstrap.php on line 17
+[01-Mar-2026 14:53:04 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /var/www/Audit/src/bootstrap.php:17
+Stack trace:
+#0 /var/www/Audit/src/bootstrap.php(17): PDO->__construct('mysql:host=mysq...', 'dbuser', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/public/index.php(5): require_once('/var/www/Audit/...')
+#2 {main}
+  thrown in /var/www/Audit/src/bootstrap.php on line 17
+[01-Mar-2026 14:53:04 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /var/www/Audit/src/bootstrap.php:17
+Stack trace:
+#0 /var/www/Audit/src/bootstrap.php(17): PDO->__construct('mysql:host=mysq...', 'dbuser', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/public/index.php(5): require_once('/var/www/Audit/...')
+#2 {main}
+  thrown in /var/www/Audit/src/bootstrap.php on line 17
+[01-Mar-2026 14:55:00 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] No such file or directory in /var/www/Audit/core/Model.php:15
+Stack trace:
+#0 /var/www/Audit/core/Model.php(15): PDO->__construct('mysql:host=loca...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/src/Models/LoginModel.php(13): Core\Model->__construct()
+#2 /var/www/Audit/src/Services/Login/LoginAuthService.php(17): Src\Models\LoginModel->__construct()
+#3 /var/www/Audit/src/Controllers/LoginController.php(20): Src\Services\Login\LoginAuthService->__construct(Object(Core\Session), Object(Core\Post))
+#4 /var/www/Audit/core/Router.php(48): Src\Controllers\LoginController->__construct(Object(Core\Session))
+#5 /var/www/Audit/public/index.php(7): Core\Router->resolve()
+#6 {main}
+  thrown in /var/www/Audit/core/Model.php on line 15
+[01-Mar-2026 14:56:04 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1045] Access denied for user 'root'@'172.18.0.3' (using password: NO) in /var/www/Audit/core/Model.php:15
+Stack trace:
+#0 /var/www/Audit/core/Model.php(15): PDO->__construct('mysql:host=mysq...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/src/Models/LoginModel.php(13): Core\Model->__construct()
+#2 /var/www/Audit/src/Services/Login/LoginAuthService.php(17): Src\Models\LoginModel->__construct()
+#3 /var/www/Audit/src/Controllers/LoginController.php(20): Src\Services\Login\LoginAuthService->__construct(Object(Core\Session), Object(Core\Post))
+#4 /var/www/Audit/core/Router.php(48): Src\Controllers\LoginController->__construct(Object(Core\Session))
+#5 /var/www/Audit/public/index.php(7): Core\Router->resolve()
+#6 {main}
+  thrown in /var/www/Audit/core/Model.php on line 15
+[01-Mar-2026 14:56:05 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1045] Access denied for user 'root'@'172.18.0.3' (using password: NO) in /var/www/Audit/core/Model.php:15
+Stack trace:
+#0 /var/www/Audit/core/Model.php(15): PDO->__construct('mysql:host=mysq...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/src/Models/LoginModel.php(13): Core\Model->__construct()
+#2 /var/www/Audit/src/Services/Login/LoginAuthService.php(17): Src\Models\LoginModel->__construct()
+#3 /var/www/Audit/src/Controllers/LoginController.php(20): Src\Services\Login\LoginAuthService->__construct(Object(Core\Session), Object(Core\Post))
+#4 /var/www/Audit/core/Router.php(48): Src\Controllers\LoginController->__construct(Object(Core\Session))
+#5 /var/www/Audit/public/index.php(7): Core\Router->resolve()
+#6 {main}
+  thrown in /var/www/Audit/core/Model.php on line 15
+[01-Mar-2026 14:56:06 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1045] Access denied for user 'root'@'172.18.0.3' (using password: NO) in /var/www/Audit/core/Model.php:15
+Stack trace:
+#0 /var/www/Audit/core/Model.php(15): PDO->__construct('mysql:host=mysq...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/src/Models/LoginModel.php(13): Core\Model->__construct()
+#2 /var/www/Audit/src/Services/Login/LoginAuthService.php(17): Src\Models\LoginModel->__construct()
+#3 /var/www/Audit/src/Controllers/LoginController.php(20): Src\Services\Login\LoginAuthService->__construct(Object(Core\Session), Object(Core\Post))
+#4 /var/www/Audit/core/Router.php(48): Src\Controllers\LoginController->__construct(Object(Core\Session))
+#5 /var/www/Audit/public/index.php(7): Core\Router->resolve()
+#6 {main}
+  thrown in /var/www/Audit/core/Model.php on line 15
+[01-Mar-2026 14:56:06 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1045] Access denied for user 'root'@'172.18.0.3' (using password: NO) in /var/www/Audit/core/Model.php:15
+Stack trace:
+#0 /var/www/Audit/core/Model.php(15): PDO->__construct('mysql:host=mysq...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/src/Models/LoginModel.php(13): Core\Model->__construct()
+#2 /var/www/Audit/src/Services/Login/LoginAuthService.php(17): Src\Models\LoginModel->__construct()
+#3 /var/www/Audit/src/Controllers/LoginController.php(20): Src\Services\Login\LoginAuthService->__construct(Object(Core\Session), Object(Core\Post))
+#4 /var/www/Audit/core/Router.php(48): Src\Controllers\LoginController->__construct(Object(Core\Session))
+#5 /var/www/Audit/public/index.php(7): Core\Router->resolve()
+#6 {main}
+  thrown in /var/www/Audit/core/Model.php on line 15
+[01-Mar-2026 14:56:07 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1045] Access denied for user 'root'@'172.18.0.3' (using password: NO) in /var/www/Audit/core/Model.php:15
+Stack trace:
+#0 /var/www/Audit/core/Model.php(15): PDO->__construct('mysql:host=mysq...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/src/Models/LoginModel.php(13): Core\Model->__construct()
+#2 /var/www/Audit/src/Services/Login/LoginAuthService.php(17): Src\Models\LoginModel->__construct()
+#3 /var/www/Audit/src/Controllers/LoginController.php(20): Src\Services\Login\LoginAuthService->__construct(Object(Core\Session), Object(Core\Post))
+#4 /var/www/Audit/core/Router.php(48): Src\Controllers\LoginController->__construct(Object(Core\Session))
+#5 /var/www/Audit/public/index.php(7): Core\Router->resolve()
+#6 {main}
+  thrown in /var/www/Audit/core/Model.php on line 15
+[01-Mar-2026 14:56:13 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1045] Access denied for user 'root'@'172.18.0.3' (using password: NO) in /var/www/Audit/core/Model.php:15
+Stack trace:
+#0 /var/www/Audit/core/Model.php(15): PDO->__construct('mysql:host=mysq...', 'root', Object(SensitiveParameterValue), Array)
+#1 /var/www/Audit/src/Models/LoginModel.php(13): Core\Model->__construct()
+#2 /var/www/Audit/src/Services/Login/LoginAuthService.php(17): Src\Models\LoginModel->__construct()
+#3 /var/www/Audit/src/Controllers/LoginController.php(20): Src\Services\Login\LoginAuthService->__construct(Object(Core\Session), Object(Core\Post))
+#4 /var/www/Audit/core/Router.php(48): Src\Controllers\LoginController->__construct(Object(Core\Session))
+#5 /var/www/Audit/public/index.php(7): Core\Router->resolve()
+#6 {main}
+  thrown in /var/www/Audit/core/Model.php on line 15

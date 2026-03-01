@@ -1,2 +1,5 @@
-/.vscode/
-/.vendor/
+.env
+.php_errors.log
+.vscode/
+.vendor/
+.logs/

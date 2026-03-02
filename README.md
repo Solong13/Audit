@@ -90,3 +90,8 @@ Rename .env.example to .env and update credentials.
 
 5. Run project
 php -S localhost:8000 -t public
+
+Or 
+
+docker compose up -d --build
+# потім зайти на http://localhost:8000

@@ -3,8 +3,6 @@
 use PHPUnit\Framework\TestCase;
 use Core\Paginator;
 
-/*Треба придумати кращий приклад*/
-
 class PaginatorTest extends TestCase
 {
     private Paginator $paginator;

@@ -8,7 +8,6 @@ use Src\Controllers\AvatarController;
 use Src\Controllers\RegistrationController;
 use Src\Controllers\NotFoundController;
 
-// Чи не варто додати сторінку головну....404
 $app->router->get('/registration', [RegistrationController::class, 'registrationAction'])
        ->middleware('guest');
 
